@@ -26,6 +26,7 @@ main {
 }
 
 aside {
+    align-content: center;
     grid-area: aside;
 }
 
