@@ -26,7 +26,9 @@
             
             - *MAIN ELEMENT* Search Bar
 
-                - on submit of search term bring up Printrest Api in one section and Google Places Api section
+                - on submit of search term bring up Printrest Api 
+                
+                - Google Places Api in another section
 
 
     

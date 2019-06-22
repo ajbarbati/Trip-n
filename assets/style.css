@@ -1,0 +1,41 @@
+article {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    grid-template-areas: 
+    "header header"
+    "nav nav"
+    "main aside" 
+    "footer footer";
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 200px 20% 300px 20%;
+}
+
+header {
+    grid-area: header;
+}
+
+nav {
+    grid-area: nav;
+}
+
+main {
+    grid-area: main;
+}
+
+aside {
+    grid-area: aside;
+}
+
+footer {
+    grid-area: footer;
+}
+
+header,
+main,
+nav,
+footer {
+    padding: 30px;
+}
