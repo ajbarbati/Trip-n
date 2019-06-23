@@ -15,6 +15,12 @@ article {
 
 header {
     grid-area: header;
+    background-image: url("images/World-Map-PNG-Photo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 700px 190px;
+    width: 100%;
+    height: auto;
 }
 
 nav {
@@ -27,6 +33,7 @@ main {
 
 aside {
     align-content: center;
+    justify-content: center;
     grid-area: aside;
 }
 
