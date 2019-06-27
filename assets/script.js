@@ -7,7 +7,7 @@ function searchPinterest() {
         url: pinterestAPI,
         method: 'GET', 
     }).done(function  (response) {
-        console.log(response.data.Object.note)
+        console.log(response.data.note)
     })
 }
 
