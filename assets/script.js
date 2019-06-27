@@ -11,7 +11,7 @@ function searchPinterest() {
 
         const pURL = response.data.url
 
-        $("#pinterest").append(pURL)
+        $("#pinterest").text(pURL)
     })
 }
 
