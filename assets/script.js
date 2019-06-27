@@ -9,9 +9,9 @@ function searchPinterest() {
     }).done(function  (response) {
         console.log(response.data.url)
 
-        const pURL = response.data.url
+        var pURL = response.data.url
 
-        $("#pinterest").text(pURL)
+        $("#pinterest").append(pURL)
     })
 }
 
