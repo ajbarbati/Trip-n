@@ -7,7 +7,7 @@ function searchPinterest() {
         url: pinterestAPI,
         method: 'GET', 
     }).done(function  (response) {
-        console.log(response.data.url)
+        console.log(response.data)
 
         // var pURL = response.data.url
 
