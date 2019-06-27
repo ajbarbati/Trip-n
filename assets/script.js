@@ -3,7 +3,7 @@ $(document).ready(function () {
 
 function searchPinterest() {
 //    const searchTerm = "Haiwaii" 
-   const pinterestAPI = "https://peaceful-caverns-21751.herokuapp.com/https://api.pinterest.com/v1/pins/ajbarbati/Office-room/pins/?access_token=AjjywUkw8NjFan2xpaYaPsBtxnuQFawwLyNrmSJF863V-2C9uAgXQDAAAb0HRfO9dLuAznMAAAAA"
+   const pinterestAPI = "https://cors-anywhere.herokuapp.com/Office-room/pins/?access_token=AjjywUkw8NjFan2xpaYaPsBtxnuQFawwLyNrmSJF863V-2C9uAgXQDAAAb0HRfO9dLuAznMAAAAA"
    
     $.ajax({
         url: pinterestAPI,
