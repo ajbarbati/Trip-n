@@ -3,19 +3,41 @@ $(document).ready(function () {
 
 function searchPinterest() {
 //    const searchTerm = "Haiwaii" 
-   const pinterestAPI = "https://cors-anywhere.herokuapp.com/https://api.pinterest.com/v1/pins/ajbarbati/office-room/pins/?access_token=AjjywUkw8NjFan2xpaYaPsBtxnuQFawwLyNrmSJF863V-2C9uAgXQDAAAb0HRfO9dLuAznMAAAAA"
-   
-    $.ajax({
-        url: pinterestAPI,
-        method: 'GET'
-    }).done(function  (response) {
-        console.log(response)
-        console.log('buts')
-        
-        // var pURL = response.data.url
+   const pinterestAPI = "https://api.pinterest.com/v1/me/pins/?access_token=" 
 
-        // $(pURL).appendTo('#pinterest')
-    })
+   const accessToken = "ArQOqsiDx9gPWDP2BqFPQQTZ4VetFaw4MSQaeaBF863V-2C9uAgXQDAAAb0HRfO9dLuAznMAAAAA"
+   
+
+  $.ajax({
+      async: true,
+      url: pinterestAPI + accessToken,
+      method: "GET"
+  }).then(function(response) {
+    console.log(response)
+    var settings = {
+    "url": pinterestAPI + accessToken,
+    "method": "GET",
+    "timeout": 0,
+  };
+  $.ajax(settings).done(function (response) {
+    console.log(response)
+  })
+
+
+}); //PostmanCode 
+    
+    // $.ajax({
+    //     url: pinterestAPI,
+    //     method: 'GET',
+        
+    // }).then(function  (response) {
+    //     console.log(response)
+    //     console.log('buts')
+        
+    //     // var pURL = response.data.url
+
+    //     // $(pURL).appendTo('#pinterest')
+    // })
 }
 
 searchPinterest()
