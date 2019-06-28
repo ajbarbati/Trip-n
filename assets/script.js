@@ -20,7 +20,9 @@ function searchPinterest() {
     "timeout": 0,
   };
   $.ajax(settings).done(function (response) {
-    console.log(response)
+    console.log(response.data[24].url)
+
+    $("#pinterest").append(response.data[24].url)
   })
 
 
