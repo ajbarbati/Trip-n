@@ -19,10 +19,23 @@ function searchPinterest() {
     "method": "GET",
     "timeout": 0,
   };
-  $.ajax(settings).done(function (response) {
-    console.log(response.data[24].url)
+  $.ajax(settings).done(function (ajaxResponse) {
+    
+    let xhr = new XMLHttpRequest()
 
-    $("#pinterest").append(response.data[24].url)
+    xhr.open('GET',ajaxResponse,)
+
+    xhr.responseType = "text"
+
+    xhr.send()
+
+    console.log(xhr.responseText)
+
+    $("#pinterest").append(xhr.responseText)
+
+    $("#pinterest").html(
+    "<object data=" + xhr.responseText + "embed" + " width='600' height='400'>" +
+    "<embed src=" + xhr.responseText + "embed" + " width='600' height='400'> </embed> </object>")
   })
 
 
