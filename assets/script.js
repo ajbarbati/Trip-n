@@ -1,62 +1,13 @@
 $(document).ready(function () {
+  
+  // this requires the these 2 npms i had to install
+  const CognitiveServicesCredentials = require('ms-rest-azure').CognitiveServicesCredentials;
+  const EntitySearchAPIClient = require('azure-cognitiveservices-entitysearch');
+
+  let credentials = new CognitiveServicesCredentials('YOUR-ACCESS-KEY');
+  let entitySearchApiClient = new EntitySearchAPIClient(credentials);
 
 
-function searchPinterest() {
-//    const searchTerm = "Haiwaii" 
-   const pinterestAPI = "https://api.pinterest.com/v1/me/pins/?access_token=" 
-
-   const accessToken = "ArQOqsiDx9gPWDP2BqFPQQTZ4VetFaw4MSQaeaBF863V-2C9uAgXQDAAAb0HRfO9dLuAznMAAAAA"
-   
-
-  $.ajax({
-      async: true,
-      url: pinterestAPI + accessToken,
-      method: "GET"
-  }).then(function(response) {
-    console.log(response)
-    var settings = {
-    "url": pinterestAPI + accessToken,
-    "method": "GET",
-    "timeout": 0,
-  };
-  $.ajax(settings).done(function (ajaxResponse) {
-    
-    let xhr = new XMLHttpRequest()
-
-    xhr.open('GET',ajaxResponse,)
-
-    xhr.responseType = "text"
-
-    xhr.send()
-
-    console.log(xhr.responseText)
-
-    $("#pinterest").append(xhr.responseText)
-
-    $("#pinterest").html(
-    "<object data=" + xhr.responseText + "embed" + " width='600' height='400'>" +
-    "<embed src=" + xhr.responseText + "embed" + " width='600' height='400'> </embed> </object>")
-  })
 
 
-}); //PostmanCode 
-    
-    // $.ajax({
-    //     url: pinterestAPI,
-    //     method: 'GET',
-        
-    // }).then(function  (response) {
-    //     console.log(response)
-    //     console.log('buts')
-        
-    //     // var pURL = response.data.url
-
-    //     // $(pURL).appendTo('#pinterest')
-    // })
-}
-
-searchPinterest()
 })
-// createPin: function (callback)  {
-//     PDK.request('')
-// }
