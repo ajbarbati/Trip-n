@@ -43,6 +43,42 @@ function getSubscriptionKey() {
   return key
 }
 
+// Invalidae stored API subscription key so user will be prompted again
+function invalidateSubscriptionKey() {
+  storeValue(API_KEY_COOKIE, "")
+}
+
+//Escape qoutes  to HTML entities for use in HTNL tag attributes
+function escapeQuotes(text) {
+  return text.replace(/'/g, "&apos;").replace(/"/g, "&quot;")
+}
+
+// Get the host portion of a url , stripping out search results formatting
+function getHost(url) {
+  return url.replace(/<\/?b>/g, "").replace(/^https?:\/\//, "").split("/")[0].replace(/^www\./, "")
+}
+
+// Format plain text for display as an HTML <pre> element
+function preFormat(text) {
+  text = "" + text
+  return "<pre>" + text.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</pre>"
+}
+
+// Put HTML markup into a <div> and reveal it
+function showDiv(id, html) {
+  var content = document.getElementById("_" + id)
+  if (content) content.innerHTML = html
+  var wrapper = document.getElementById(id)
+  if (wrapper) wrapper.style.display = html.trim() ? "block" : "none"
+}
+
+// Hides the specified <div>s
+function hideDivs() {
+  for (var i = 0; i < arguments.length; i++) {
+      var element = document.getElementById(arguments[i])
+      if (element) element.style.display = "none"
+  }
+}
 searchItemRenderers = {
   webPages: function(item) {
     var html = []
@@ -109,26 +145,6 @@ searchItemRenderers = {
     return html.join("")
   }
 }
-
-// render the search results from the JSOn response
-function renderSearchResults(results) {
-
-  // If spelling was correxted, update the search field
-  if (results.queryContext.alteredQuery)
-    document.forms.bing.query.value = results.queryContext.alteredQuery
-  
-  // Add Prev / Next links with resukt count
-  var pagingLinks = renderPagingLinks(results)
-  showDiv("paging1", pagingLinks)
-  showDiv("paging2", pagingLinks)
-
-  // Render the results for each section
-  for (section in {pole: 0, mainline: 0, sidebar: 0}) {
-    if (results.rankingResponse[section])
-      showDiv(section, renderResultsItems(section, reults))
-  }
-}
-
 // Render search results from the RankingResponse object per rank response and
 // use and display requirements
 function renderResultsItems(section, reults) {
@@ -159,8 +175,90 @@ function renderResultsItems(section, reults) {
   }
   return html.join("\n\n")
 }
+// render the search results from the JSOn response
+function renderSearchResults(results) {
 
+  // If spelling was correxted, update the search field
+  if (results.queryContext.alteredQuery)
+    document.forms.bing.query.value = results.queryContext.alteredQuery
+  
+  // Add Prev / Next links with resukt count
+  var pagingLinks = renderPagingLinks(results)
+  showDiv("paging1", pagingLinks)
+  showDiv("paging2", pagingLinks)
 
+  // Render the results for each section
+  for (section in {pole: 0, mainline: 0, sidebar: 0}) {
+    if (results.rankingResponse[section])
+      showDiv(section, renderResultsItems(section, reults))
+  }
+}
+
+function renderErrorMessage(message) {
+  showDiv("error", preFormat(message))
+  showDiv("noresults", "No results.")
+}
+
+// Handle Bing search request results
+function handleOnLoad() {
+  hideDivs("noresults")
+
+  var json = this.responseText.trim()
+  var jsobj = {}
+
+  // Try to parse the JSON results
+  try {
+      if (json.length) jsobj = JSON.parse(json)
+  } catch(e) {
+      renderErrorMessage("Invalid JSON response")
+  }
+
+  // Show raw JSON and headers
+  showDiv("json", preFormat(JSON.stringify(jsobj, null, 2)))
+  showDiv("http", preFormat("GET " + this.responseURL + "\n\nStatus: " + this.status + " " +
+      this.statusText + "\n" + this.getAllResponseHeaders()))
+
+  // If HTTP response is 200 OK, then try to render search results
+  if (this.status === 200) {
+      var clientid = this.getResponseHeader("X-MSEdge-ClientID")
+      if (clientid) retrieveValue(CLIENT_ID_COOKIE, clientid)
+      if (json.length) {
+          if (jsobj._type === "SearchResponse" && "rankingResponse" in jsobj) {
+              renderSearchResults(jsobj)
+          } else {
+              renderErrorMessage("No search results in JSON response")
+          }
+      } else {
+          renderErrorMessage("Empty response (are you sending too many requests too quickly?)")
+      }
+  }
+
+  // Any other HTTP response is an error
+  else {
+      // 401 is unauthorized; force re-prompt for API key for next request
+      if (this.status === 401) invalidateSubscriptionKey()
+
+      // Some error responses don't have a top-level errors objec
+      var errors = jsobj.errors || [jsobj]
+      var errmsg = []
+
+      // Display HTTP status code
+      errmsg.push("HTTP Status " + this.status + " " + this.statusText + "\n")
+
+      // Add all fields from all error responses
+      for (var i = 0; i < errors.length; i++) {
+          if (i) errmsg.push("\n")
+          for (var k in errors[i]) errmsg.push(k + ": " + errors[i][k])
+      }
+
+      // Display Bing Trace ID if it isn't blocked by CORS
+      var traceid = this.getResponseHeader("BingAPIs-TraceId")
+      if (traceid) errmsg.push("\nTrace ID " + traceid)
+
+      // Display the error message
+      renderErrorMessage(errmsg.join("\n"))
+  }
+}
 
 // Perform a search constructed from the query, options, and subscription key
 function bingWebSearch(query, options, key) {
@@ -205,73 +303,6 @@ function bingWebSearch(query, options, key) {
   request.send()
   return false
 }
-
-// * handleBingResponse() parses the object, displays results, and contains error logic for failed requests
-function handleBingResponse() {
-  hideDivs("noresults")
-
-  var json = this.reponseText.trim()
-  var jsobj = {}
-
-  //try to parse results objest
-  try {
-    if (json.length) jsobj = JSON.parse(json)
-  } catch(e) {
-    renderErrorMessage("Invalid JSON response")
-    return
-  }
-
-  // Show raw JSON and the HTTP request
-  showDiv("json", preFormat(JSON.stringify(jsobj, null, 2)))
-  showDiv("http", preFormat("GET " + this.reponseURL + "\n\nStatus: " + this.status + "" + 
-          this.statusText + "\n" + this.getAllResponseHeaders()))
-        
-  // If the HTTP response is 200 OK, try to render the results
-  if (this.status === 200) {
-    var clientid = this.getResponseHeader("X-MSEdge-ClientID")
-    if (clientid) retrieveValue(CLIENT_ID_COOKIE, clientid)
-    if (json.length) {
-      if (jsobj._type === "SearchReponse" && "rankingResponse" in jsobj) {
-        renderSearchResults(jsobj)
-      } else {
-        renderErrorMessage("No search result in JSON response")
-      }
-    } else {
-      renderErrorMessage("Empty reponse (are you sending too many requests too quickly?)")
-    } 
-  }
-
-// * mmicrosoft is good at writing error codes lol
-
-  // Any other HTTP response is considerd an error 
-  else {
-    // 401 is unauthorized; force a re-prompt for the user's subscription
-    // key on the next request
-    if (this.status === 401) invalidateSubscriptionKey()
-
-    // Some error responses don't have a top-level errors object, if absent
-    // create one
-    var errors = jsobj.errors || [jsobj]
-    var errmsg = []
-
-    // Display the HTTP status code
-    errmsg.push("HTTP Status " + this.status + " " + this.statusText + "\n")
-
-    // Add all fields from all error responses
-    for (var i = 0; i < errors.length; i++) {
-      if (i) errmsg.push("\n")
-      for (var k in errors[i]) errmsg.push(k + ": " + errors[i][k])
-    }
-    
-    // Display Bing Trace ID if it isn"t blocked by CORS
-    var traceid = this.getResponseHeader("BingAPIs-TraceId")
-    if (traceid) errmsg.push("\nTrace ID " + tracedid)
-
-    // Display the error message
-    renderErrorMessage(errmsg.join("\n"))
-  }
-}
-
 // build query options from selections in the HTML form
 function bingSearchOptions(form) {
   
@@ -301,3 +332,7 @@ function bingSearchOptions(form) {
   options.push("textFormat=HTML")
   return options.join("&")
 }
+
+
+
+
