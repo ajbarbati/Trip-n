@@ -316,9 +316,8 @@ function bingWebSearch(query, options, key) {
 
 // Build query options from the HTML form.
 function bingSearchOptions(form) {
-
   var options = [];
-  options.push("mkt=" + form.where.value);
+  options.push("mkt=" + form.when.value);
   options.push("SafeSearch=" + (form.safe.checked ? "strict" : "off"));
   if (form.when.value.length) options.push("freshness=" + form.when.value);
   var what = [];
