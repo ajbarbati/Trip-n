@@ -4,7 +4,33 @@ CLIENT_ID_COOKIE = "bing-search-client-id"
 
 BING_ENDPOINT = "http://localhost:9090/https://api.cognitive.microsoft.com/bing/v7.0/search"
 
-// See source code for storeValue and retrieveValue definitions
+// Browsers are wierd so this either uses local storage or cookies
+
+try {
+  // Try localStorage
+  localStorage.getItem
+
+  window.retrieveValue = function (name) {
+    return localStorage.getItem(name) || ""
+  }
+  window.storeValue = function(name, value) {
+    localStorage.setItem(name, value)
+  }
+} catch (e) { 
+  window.retrieveValue = function (name) {
+    var cookies = document.cookie.split(";")
+    for (var i = 0; i < cookies.length; i++) {
+      var keyvalue = cookies[i].split("=")
+      if (keyvalue[0].trim() === name) return keyvalue[1]
+    }
+    return ""
+  }
+  window.storeValue = function (name, value) {
+    var expiry = new Data()
+    expiry.setFullYear(expiry.getFullYear() + 1)
+    document.cookie + "=" + value.trim() + "; expires=" + expiry.toUTCString()
+  }
+}
 
 // Get stored subscription key, or prompt if it isn't found
 function getSubscriptionKey() {
