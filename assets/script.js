@@ -17,11 +17,124 @@ function getSubscriptionKey() {
   return key
 }
 
+searchItemRenderers = {
+  webPages: function(item) {
+    var html = []
+    html.push("<p class='webPages'><a href='" + item.url + "'>" + item.name + "</a>")
+    html.push(" (" + getHost(item.displayUrl) + ")")
+    html.push("<br>" + item.snippet)
+    if ("deepLinks" in item) {
+      var links = []
+      for (var i = 0; i < item.deepLinks.length; i++) {
+        links.push("<a href='" + itemdeepLinks[i].url + "'>" + item.deepLinks[i].name + "</a>")
+      }
+      html.push("<br>" + links.join(" - "))
+    }
+    return html.join(" - ")
+  },
+
+  //Render news article result
+  news: function(item) {
+
+    var html= []
+      html.push("<p class='news'>")
+      if (item.image) {
+        width = 60
+        height = Math.round(width * item.image.thumbnail.height / item.image.thumbnail.width)
+        html.push("<img src='" + item.image.thumbnail.contentUrl + "&h=" + height + "&w=" + width + "' width=" + width + " height=" + height + ">")
+      }
+      html.push("<a href='" + item.url + "'>" + item.name + "</a>")
+      if (item.category) html.push(" - " + item.category)
+      if (item.contractualRules) { // Must display source attributions
+        html.push(" (")
+        var rules = []
+        for (var i = 0; i < item.contractualRules.length; i++)
+          rules.push(item.contractualRules[i].text)
+        html.push(rules.join(", "))
+        html.push(")")
+      }
+      html.push(" (" + getHost(item.url) + ")")
+      html.push("<br>" + item.description)
+      return html.join("")
+  },
+
+  // Render image result using thumbnail
+  images: function(item, section, index, count) {
+    var height = 60
+    var width = Math.round(height * item.thumbnail.width / item.thumbnail.height)
+    var html = []
+    if (selection === "sidebar") {
+      if (index) html.push("<br>")
+    } else {
+      if (!index) html.push("<p class='images'>")
+    }
+    html.push("<a href='" + item.hostPageUrl + "'>")
+    var title = escapeQuotes(item.name) + "\n" + getHost(item.hostPageDisplayUrl)
+    html.push("<img src=" + height + " width=" + width + " title" + title + "' alt='" + title + "'>")
+    html.push("</a>")
+    return html.join("")
+  },
+  relatedSearches: function(item, section, index, count) {
+    var html = []
+    if (selection !== "sidebar") html.push(index === 0 ? "<h2>Related</h2>": " - ")
+    else html.push("<p class='relatedSearches'>")
+    html.push("<a href='#' onclick='return doRelatedSearch(&quot;" + escapeQuotes(item.text) + "&quot;)'>")
+    html.push(item.displayText + "</a>")
+    return html.join("")
+  }
+}
+
 // render the search results from the JSOn response
 function renderSearchResults(results) {
 
-  // If spelling was correxted
+  // If spelling was correxted, update the search field
+  if (results.queryContext.alteredQuery)
+    document.forms.bing.query.value = results.queryContext.alteredQuery
+  
+  // Add Prev / Next links with resukt count
+  var pagingLinks = renderPagingLinks(results)
+  showDiv("paging1", pagingLinks)
+  showDiv("paging2", pagingLinks)
+
+  // Render the results for each section
+  for (section in {pole: 0, mainline: 0, sidebar: 0}) {
+    if (results.rankingResponse[section])
+      showDiv(section, renderResultsItems(section, reults))
+  }
 }
+
+// Render search results from the RankingResponse object per rank response and
+// use and display requirements
+function renderResultsItems(section, reults) {
+
+  var items = results.rankingResponse[section].items
+  var html = []
+  for (var i = 0; i < items.length; i++) {
+
+    var item = items[i]
+    // Collection name has lowercase first letter while anserType has uppercase
+    // e.g. 'WebPages' RankingResult type is in the 'webPages' top-level collection
+    var type = item.answerType[0].toLowerCase() + item.answerType.slice(1)
+    if (type in results && type in searchItemRenderers) {
+
+    var render = searchItemRenderers[type]
+    // This ranking item refers to ONE result of the specified type
+    if ("resultIndex" in item) {
+      html.push(render(results[type].value[item.resultIndex], section))
+    // This ranking refers to ALL results of the specified type
+    } else {
+      var len = results[type].value.length
+      for (var j = 0; j < len; j++) {
+        html.push(render(results[type].value[j], section, j, len))
+      }
+
+      }
+    }
+  }
+  return html.join("\n\n")
+}
+
+
 
 // Perform a search constructed from the query, options, and subscription key
 function bingWebSearch(query, options, key) {
