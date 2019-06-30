@@ -9,8 +9,8 @@ article {
     "nav nav"
     "main aside" 
     "footer footer";
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 200px 20% 300px 20%;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 200px 20% 1000px 20%;
 }
 
 header {
@@ -32,10 +32,77 @@ main {
 }
 
 aside {
+    grid-area: aside;
+    display: grid;
     align-content: center;
     justify-content: center;
-    grid-area: aside;
+    width: auto;
+    height: auto;
+    grid-template-areas: 
+    "noresults sidebar"
+    "pole mainline"
+    "paging1 paging2";
+    grid-template-columns: .5fr 3fr;
+    grid-template-rows: 40% 40% 10%;
 }
+
+#paging1 {
+    grid-area: paging1;
+    align-content: center;
+    justify-content: center;
+}
+#_paging1 {
+    align-content: center;
+    justify-content: center;
+}
+#noresults {
+    grid-area: noresults;
+    align-content: center;
+    justify-content: center;
+}
+#_noresults {
+    align-content: center;
+    justify-content: center;
+}
+#sidebar {
+    grid-area: sidebar;
+    align-content: center;
+    justify-content: center;
+    overflow: scroll;
+}
+#_sidebar {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    grid-template-columns: 30% 30% 30%;
+}
+#pole {
+    grid-area: pole;
+    align-content: center;
+    justify-content: center;
+}
+#mainline {
+    grid-area: mainline;
+    align-content: center;
+    justify-content: center;
+    overflow: scroll;
+}
+#_mainline {
+    align-content: center;
+    justify-content: center;
+}
+#paging2 {
+    grid-area: paging2;
+    align-content: center;
+    justify-content: center;
+}
+#_paging2 {
+    align-content: center;
+    justify-content: center;
+}
+
 
 footer {
     grid-area: footer;

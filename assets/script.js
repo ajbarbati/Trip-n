@@ -69,14 +69,14 @@ function showDiv(id, html) {
   var content = document.getElementById("_" + id)
   if (content) content.innerHTML = html;
   var wrapper = document.getElementById(id);
-  if (wrapper) wrapper.style.display = html.trim() ? "block" : "none";
+  // if (wrapper) wrapper.style.display = html.trim() ? "block" : "none";
 }
 
 // Hides the specified <div>s.
 function hideDivs() {
   for (var i = 0; i < arguments.length; i++) {
       var element = document.getElementById(arguments[i])
-      if (element) element.style.display = "none";
+      // if (element) element.style.display = "none";
   }
 }
 
@@ -335,20 +335,20 @@ function bingSearchOptions(form) {
 }
 
 // Toggle display of a div (used by JSON/HTTP expand buttons).
-function toggleDisplay(id) {
+// function toggleDisplay(id) {
 
-  var element = document.getElementById(id);
-  if (element) {
-      var display = element.style.display;
-      if (display === "none") {
-          element.style.display = "block";
-          window.scrollBy(0, 200);
-      } else {
-          element.style.display = "none";
-      }
-  }
-  return false;
-}
+//   var element = document.getElementById(id);
+//   if (element) {
+//       var display = element.style.display;
+//       if (display === "none") {
+//           element.style.display = "block";
+//           window.scrollBy(0, 200);
+//       } else {
+//           element.style.display = "none";
+//       }
+//   }
+//   return false;
+// }
 
 // Perform a related search (used by related search links).
 function doRelatedSearch(query) {
