@@ -2,7 +2,7 @@
 API_KEY_COOKIE = "bing-search-api-key"
 CLIENT_ID_COOKIE = "bing-search-client-id"
 
-BING_ENDPOINT = "https://api.cognitive.microsoft.com/bing/v7.0/search"
+BING_ENDPOINT = "http://localhost:9090/https://api.cognitive.microsoft.com/bing/v7.0/search"
 
 // See source code for storeValue and retrieveValue definitions
 
