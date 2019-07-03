@@ -1,0 +1,179 @@
+article {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    grid-template-areas: 
+    "header header"
+    "nav nav"
+    "main aside" 
+    "footer footer";
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 200px 20% 300px 20%;
+    background-color: lightslategray;
+
+}
+
+h1 {
+    font-size: 4em;
+    color: whitesmoke;
+    justify-content: center;
+}
+header {
+    grid-area: header;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 700px 190px;
+    width: 100%;
+    height: auto ;
+    
+}
+
+
+
+
+      .topnav {
+        overflow: hidden;
+        background-color: #e9e9e9;
+      }
+      
+      /* Style the links inside the navigation bar */
+      .topnav a {
+        float: left;
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+      
+      /* Change the color of links on hover */
+      .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+      
+      /* Style the "active" element to highlight the current page */
+      .topnav a.active {
+        background-color: #2196F3;
+        color: white;
+      }
+      
+      /* Style the search box inside the navigation bar */
+      .topnav input[type=text] {
+        float: center;
+        padding: 6px;
+        border: none;
+        margin-top: 8px;
+        margin-right: 16px;
+        font-size: 17px;
+    
+      }
+      
+      .bg-light {
+          background-color: #3EB650!important ;
+          
+        
+         
+      }
+      #map {
+          
+      }
+
+      .title {
+          color:white;
+          float:middle;
+          justify-content: center !important ;
+      }
+
+      .right {
+          float: right ;
+      }
+.jumbotron {
+    background-color: #292930;
+    text-align: center;
+    
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 0px;
+    padding: 32px 32px;
+
+
+
+}
+    
+    img.logo {
+        height: 80px;
+    }
+
+
+nav {
+    grid-area: nav;
+    flex-grow: inherit ;
+    fill-opacity: inherit;
+    
+    
+}
+
+main {
+    grid-area: main;
+
+    
+    
+}
+
+body {
+    text-align: center;
+    background-image: url(./images/memphis-mini.png);
+    font-family: 'PT Sans', sans-serif;
+    
+}
+aside {
+    align-content: center;
+    justify-content: center;
+    grid-area: aside;
+}
+
+footer {
+    grid-area: footer;
+}
+
+header,
+main,
+nav,
+footer {
+    padding: 30px;
+    margin: 0px ;
+   
+}
+.countrybutton {
+    
+    
+
+}
+.badge {
+    width: 100px;
+    padding: 5px 10px !important ;
+    
+
+}
+
+.row {
+    margin: 10px;
+    justify-content: center;
+}
+
+.card {
+
+    margin: 10px;
+    background-color: #FCC133;
+    border-radius: 5px;
+    
+}
+#map {
+    height: 20px;
+    width: 30px;
+}

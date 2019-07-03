@@ -1,11 +1,164 @@
+
 // Cookie names for stored data
 API_KEY_COOKIE = "bing-search-api-key"
 CLIENT_ID_COOKIE = "bing-search-client-id"
 
 BING_ENDPOINT = "http://localhost:9090/https://api.cognitive.microsoft.com/bing/v7.0/search"
 
-// Browsers are wierd so this either uses local storage or cookies
 
+
+// $(document).ready(function  () {
+//   $("#searchBtn").click(function(){
+//   initAutocomplete()
+// function initAutocomplete() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 38.929502, lng: -100.029292},
+//     zoom: 4,
+//     mapTypeId: 'roadmap'
+//   });
+
+//   // Create the search box and link it to the UI element.
+//   var input = document.getElementById('term');
+//   var searchBox = new google.maps.places.SearchBox(input);
+//   map.controls.push(input);
+
+//   // Bias the SearchBox results towards current map's viewport.
+//   map.addListener('bounds_changed', function() {
+//     searchBox.setBounds(map.getBounds());
+//   });
+
+//   var markers = [];
+//   // Listen for the event fired when the user selects a prediction and retrieve
+//   // more details for that place.
+//   searchBox.addListener('places_changed', function() {
+//     var places = searchBox.getPlaces();
+
+//     if (places.length == 0) {
+//       return;
+//     }
+
+//     // Clear out the old markers.
+//     markers.forEach(function(marker) {
+//       marker.setMap(null);
+//     });
+//     markers = [];
+
+//     // For each place, get the icon, name and location.
+//     var bounds = new google.maps.LatLngBounds();
+//     places.forEach(function(place) {
+//       if (!place.geometry) {
+//         console.log("Returned place contains no geometry");
+//         return;
+//       }
+//       var icon = {
+//         url: place.icon,
+//         size: new google.maps.Size(71, 71),
+//         origin: new google.maps.Point(0, 0),
+//         anchor: new google.maps.Point(17, 34),
+//         scaledSize: new google.maps.Size(25, 25)
+//       };
+
+//       // Create a marker for each place.
+//       markers.push(new google.maps.Marker({
+//         map: map,
+//         icon: icon,
+//         title: place.name,
+//         position: place.geometry.location
+//       }));
+
+//       if (place.geometry.viewport) {
+//         // Only geocodes have viewport.
+//         bounds.union(place.geometry.viewport);
+//       } else {
+//         bounds.extend(place.geometry.location);
+//       }
+//     });
+//     map.fitBounds(bounds);
+//   });
+// }
+// })
+// })
+// Browsers are wierd so this either uses local storage or cookies
+// Call Geocode
+   //geocode();
+
+
+   
+
+   // Get location form
+   var locationForm = document.getElementById('searchBar');
+
+   // Listen for submiot
+   locationForm.addEventListener('submit', geocode);
+
+   function geocode(e){
+     // Prevent actual submit
+     e.preventDefault();
+    
+     var location = document.getElementById('term').value;
+
+     axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
+       params:{
+         address:location,
+         key:'AIzaSyCAn30mAxfNp2pBfgw_z1VXoC3t5561YXc'
+       }
+     })
+     .then(function(response){
+       // Log full response
+       console.log(response);
+      
+       // Formatted Address
+       var formattedAddress = response.data.results[0].formatted_address;
+       var formattedAddressOutput = `
+         <ul class="list-group">
+           <li class="list-group-item">${formattedAddress}</li>
+         </ul>
+       `;
+
+       // Address Components
+       var addressComponents = response.data.results[0].address_components;
+       var addressComponentsOutput = '<ul class="list-group">';
+       for(var i = 0;i < addressComponents.length;i++){
+         addressComponentsOutput += `
+           <li class="list-group-item"><strong>${addressComponents[i].types[0]}</strong>: ${addressComponents[i].long_name}</li>
+         `;
+       }
+       addressComponentsOutput += '</ul>';
+
+       // Geometry
+       var lat = response.data.results[0].geometry.location.lat;
+       var lng = response.data.results[0].geometry.location.lng;
+       var geometryOutput = `
+         <ul class="list-group">
+           <li class="list-group-item"><strong>Latitude</strong>: ${lat}</li>
+           <li class="list-group-item"><strong>Longitude</strong>: ${lng}</li>
+         </ul>
+       `;
+       console.log(response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng)
+      
+        var input = document.getElementById('term');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls.push(input)
+        searchBox.addListener('places_changed', function() {
+              var places = searchBox.getPlaces();
+          
+              if (places.length == 0) {
+                return;
+              }})
+        var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: response.data.results[0].geometry.location.lat, lng: response.data.results[0].geometry.location.lat},
+        zoom: 2      
+      })
+      
+      //  Output to app
+      document.getElementById('_noresults').innerHTML = formattedAddressOutput;
+      document.getElementById('_sidebar').innerHTML = addressComponentsOutput;
+      document.getElementById('_sidebar').innerHTML = geometryOutput;
+     })
+     .catch(function(error){
+       console.log(error);
+     });
+   }
 try {
   // Try localStorage
   localStorage.getItem;
@@ -124,7 +277,7 @@ searchItemRenderers = {
   },
   // Render image result using thumbnail.
   images: function(item, section, index, count) {
-      var height = 60;
+      var height = 150;
       var width = Math.round(height * item.thumbnail.width / item.thumbnail.height);
       var html = [];
       if (section === "sidebar") {
@@ -400,4 +553,8 @@ function doPrevSearchPage() {
   }
   alert("You're already at the beginning!");
   return false;
+
+  
 }
+
+
