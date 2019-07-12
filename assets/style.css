@@ -31,20 +31,33 @@ header {
     background-position: center;
     width: 100%;
     height: auto;
+    background-color: #3EB650;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 20px;
 }
 /* - HEADER -  */
 
 /* - NAV -  */
 nav {
     grid-area: nav;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
 }
 #query {
     position: relative;
 }
 #term {
-    border: 5px solid #449952;
+    border: 5px solid #ffffff;
     border-radius: 9px;
-    width: 100%;
+    width: 75%;
     height: 100px;
     background: url(../assets/images/search-icon.png) no-repeat right center;
     background-size: 80px;
@@ -53,9 +66,15 @@ nav {
     margin: 10px;
     font-size: 40px;
 }
+#searchBar {
+    background-color: #444444;
+    border: 5px solid #449952;
+    border-radius: 9px;
+    color: #ffffff;
+}
 
 input::placeholder{
-    color: green;
+    color: #ffffff;
     font-size: 32px;
     opacity: 0.2;
 }
@@ -75,6 +94,10 @@ input::placeholder{
     border-radius: 9px;
     color: #449952;
 }
+
+p {
+    padding-left: 10px;
+}
 /* - NAV -  */
 
 /* - MAIN -  */
@@ -83,11 +106,13 @@ main {
     border: 5px solid #449952;
     border-radius: 9px;
     margin: 10px;
+    background-color: #FCC133;
 }
 /* - MAIN -  */
 
 /* - ASIDE -  */
 aside {
+    background-color: #FCC133;
     margin: 10px;
     border: 5px solid #449952;
     border-radius: 9px;
@@ -151,5 +176,8 @@ aside {
 /* - FOOTER -  */
 footer {
     grid-area: footer;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
 }
 /* - FOOTER -  */

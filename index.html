@@ -12,16 +12,17 @@
 <body onload="document.forms.bing.query.focus();">  
     <article>
         <header>
-
+        <h1>Trip'n All-in-one-Vacation-Planner</h1>
+        <h2>Ranked in Bizness Insider's Best Travel Webapps of 2019!</h2>
         </header>
         <nav>
             <form id="searchBar" name="bing" onsubmit="this.offset.value = 0; return bingWebSearch(this.query.value, bingSearchOptions(this), getSubscriptionKey())">
             
                 <div id="query"><!-- query controls including search field and options -->
-                    <h1>Trip-n</h2>
+                    
                 
-                        <input type="text" name="query" id="term" placeholder="Find Your Trip" autocomplete=off>
-                        <button id="searchBtn" type="hidden" class="controls"></button></button>
+                        <input type="text" name="query" id="term" placeholder="Let's Get Trip'n" autocomplete=off>
+                        <button id="searchBtn" type="hidden" class="controls"></button>
                     <div id="#opSection">  
                     <input type=checkbox name="what" id="webpages" value="webpages">
                         <label for="webpages">Web pages</label>
@@ -46,7 +47,6 @@
                     <input type=hidden name="count" value="25">
                     <input type=hidden name="offset" value="0">
                 </div>
-                </form>
                 <p><select name="where">
                         <option value="es-AR">Argentina (Spanish)</option>
                         <option value="en-AU">Australia (English)</option>
@@ -90,6 +90,8 @@
                         <option value="es-US">United States (Spanish)</option>
                     </select>
                 <p>  
+                </form>
+                
                 </div>
         </nav>
         <main>
@@ -105,17 +107,17 @@
                     </div>
                 </div> -->
                 
-                <h2>Results</h2>
+                <!-- <h2>Results</h2> -->
                 <!-- <div id="paging1">
                     <div id="_paging1">_paging1</div>
                 </div> -->
                 
                 <div id="noresults">
-                    <div id="_noresults">_noresults</div>
+                    <div id="_noresults"></div>
                 </div>
                 
                 <div id="sidebar">
-                    <div id="_sidebar">_sidebar</div>
+                    <div id="_sidebar"></div>
                 </div>
                 
                 <!-- <div id="pole">
@@ -123,11 +125,11 @@
                 </div>
                  -->
                 <div id="mainline">
-                    <div id="_mainline">_mainline</div>
+                    <div id="_mainline"></div>
                 </div>
                 
                 <div id="paging2">
-                    <div id="_paging2">_paging2</div>
+                    <div id="_paging2"></div>
                 </div>
                 
                 <!-- <div id="json">
