@@ -4,7 +4,7 @@
   "description": "A single-page web app that displays Bing Web Search results, including pages, images, news articles, and video thumbnails.",
   "main": "bing-web-search.js",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.17.3"
   },
   "devDependencies": {},
   "scripts": {
